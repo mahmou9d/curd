@@ -128,7 +128,7 @@ const SignUp = () => {
         <p style={{ marginTop: "15px", fontSize: "12px" }}>
           Already have an account?
           <span>
-            <NavLink style={{ marginLeft: "5px" }} to="/SignUp" end>
+            <NavLink style={{ marginLeft: "5px" }} to="/login" end>
               Log in
             </NavLink>
           </span>
