@@ -1,0 +1,18 @@
+{
+  "build": {
+    "builder": "NIXPACKS",
+    "nixpacksPlan": {
+      "phases": {
+        "install": {
+          "cmds": ["npm install", "npx update-browserslist-db@latest"]
+        },
+        "build": {
+          "cmds": ["npm run build"]
+        }
+      }
+    }
+  },
+  "deploy": {
+    "startCommand": "npm run start"
+  }
+}
