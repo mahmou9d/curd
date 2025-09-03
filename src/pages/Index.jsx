@@ -10,7 +10,9 @@ const Index = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);
 const item =JSON.parse(localStorage.getItem("user"))
   useEffect(() => {
-    dispatch(fetchPosts(item?.user_id || item?.user?.id));
+    if (item?.user_id || item?.user?.id) {
+      dispatch(fetchPosts(item?.user_id || item?.user?.id));
+    }
   }, [dispatch, item?.user?.id, item?.user_id]);
 
   const deleteRecord = useCallback(

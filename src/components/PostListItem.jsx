@@ -16,6 +16,20 @@ const PostListItem = ({ data, deleteRecord, isLoggedIn }) => {
    dispatch(togglePostCompleted(item.id));
  };
 
+  if (!data || data.length === 0) {
+    return (
+      <tr>
+        <td colSpan="3" style={{ textAlign: "center", padding: "20px" }}>
+          <p style={{ marginBottom: "15px", color: "gray", fontSize: "16px" }}>
+            There are no products currently
+          </p>
+          <Button variant="primary" onClick={() => navigate("/post/add")}>
+            Add Product
+          </Button>
+        </td>
+      </tr>
+    );
+  }
   const records = data?.map((el, idx) => (
     <tr style={{ color: "aqua" }} key={idx}>
       <td style={{ color: "aqua" }}>#{++idx}</td>
@@ -36,7 +50,12 @@ const PostListItem = ({ data, deleteRecord, isLoggedIn }) => {
       <td>
         <ButtonGroup aria-label="Basic example" className="ButtonGroup">
           <Button
-            style={{ display: "flex", alignItems: "center", gap: "10px",borderRadius:"6px" }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              borderRadius: "6px",
+            }}
             variant="success"
           >
             <span
@@ -44,8 +63,7 @@ const PostListItem = ({ data, deleteRecord, isLoggedIn }) => {
               style={{
                 background: "transparent",
                 color: "white",
-                widows: "auto"
-                
+                widows: "auto",
               }}
             >
               {el.completed ? "Completed✅" : "Uncomplete"}
@@ -70,6 +88,8 @@ const PostListItem = ({ data, deleteRecord, isLoggedIn }) => {
       </td>
     </tr>
   ));
+
+
   return <>{records}</>;
 };
 

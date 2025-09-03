@@ -9,7 +9,7 @@ const AddPost = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const item =JSON.parse(localStorage.getItem("user"))
-console.log(item.user_id);
+// console.log(item.user_id);
   const { loading, error } = useSelector((state) => state.posts);
   const formik = useFormik({
     initialValues: { message: "", description: "" },

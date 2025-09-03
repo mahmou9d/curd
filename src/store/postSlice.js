@@ -11,7 +11,7 @@ export const fetchPosts = createAsyncThunk(
         `https://projects-production-be11.up.railway.app/api/getusertasks/${id}?format=json`
       );
       const data = await res.json();
-      console.log(data,"ghdkfjhf,l")
+      // console.log(data,"ghdkfjhf,l")
       return data;
     } catch (error) {
       console.log(error.message);

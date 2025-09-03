@@ -3,7 +3,7 @@ import PostListItem from "./PostListItem";
 
 const PostList = ({ data, deleteRecord, isLoggedIn }) => {
    const item = JSON.parse(localStorage.getItem("user"));
-   console.log(item)
+  //  console.log(item)
   return (
     <div>
       {item?.user?.id || item?.user_id ? (

@@ -32,7 +32,7 @@ const Login = () => {
           },
         }
       );
-      console.log("Login Response:", res.data);
+      // console.log("Login Response:", res.data);
       dispatch(loginSuccess(res.data));
       localStorage.setItem("user", JSON.stringify(res.data));
       nav("/");

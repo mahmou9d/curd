@@ -11,7 +11,7 @@ import { postSchema } from "../util/validationSchema";
 
 const EditPost = () => {
   const { loading, error, record } = usePostDetails();
-  console.log(record)
+  // console.log(record)
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
