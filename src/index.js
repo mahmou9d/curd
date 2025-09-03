@@ -35,7 +35,15 @@ const router = createBrowserRouter([
       {
         path: "post/add",
         element: (
-          <Suspense fallback="loading please wait...">
+          <Suspense
+            fallback={
+              <div className="flex h-screen items-center justify-center">
+                <div className="text-lg font-semibold animate-pulse">
+                  loading please wait...
+                </div>
+              </div>
+            }
+          >
             <AddPost />
           </Suspense>
         ),
@@ -43,7 +51,15 @@ const router = createBrowserRouter([
       {
         path: "SignUp",
         element: (
-          <Suspense fallback="loading please wait...">
+          <Suspense
+            fallback={
+              <div className="flex h-screen items-center justify-center">
+                <div className="text-lg font-semibold animate-pulse">
+                  loading please wait...
+                </div>
+              </div>
+            }
+          >
             <SignUp />
           </Suspense>
         ),
@@ -51,7 +67,15 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: (
-          <Suspense fallback="loading please wait...">
+          <Suspense
+            fallback={
+              <div className="flex h-screen items-center justify-center">
+                <div className="text-lg font-semibold animate-pulse">
+                  loading please wait...
+                </div>
+              </div>
+            }
+          >
             <Login />
           </Suspense>
         ),
@@ -59,7 +83,15 @@ const router = createBrowserRouter([
       {
         path: "post/:id",
         element: (
-          <Suspense fallback="loading please wait...">
+          <Suspense
+            fallback={
+              <div className="flex h-screen items-center justify-center">
+                <div className="text-lg font-semibold animate-pulse">
+                  loading please wait...
+                </div>
+              </div>
+            }
+          >
             <Details />
           </Suspense>
         ),
@@ -68,7 +100,15 @@ const router = createBrowserRouter([
       {
         path: "post/:id/edit",
         element: (
-          <Suspense fallback="loading please wait...">
+          <Suspense
+            fallback={
+              <div className="flex h-screen items-center justify-center">
+                <div className="text-lg font-semibold animate-pulse">
+                  loading please wait...
+                </div>
+              </div>
+            }
+          >
             <EditPost />
           </Suspense>
         ),
