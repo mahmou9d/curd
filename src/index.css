@@ -104,4 +104,7 @@
 .EditDelete{
   flex-direction: column;
 }
+.header .nav li{
+width: 70px;
+}
 }
