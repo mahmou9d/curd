@@ -24,7 +24,7 @@ const PostListItem = ({ data, deleteRecord, isLoggedIn }) => {
             There are no products currently
           </p>
           <Button variant="primary" onClick={() => navigate("/post/add")}>
-            Add Product
+            Add Task
           </Button>
         </td>
       </tr>
