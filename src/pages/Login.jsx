@@ -23,7 +23,7 @@ const Login = () => {
       const res = await axios.post(
         "https://projects-production-be11.up.railway.app/api/login/?format=json",
         {
-          email: data.email, // أو username لو الباك محتاج
+          email: data.email,
           password: data.password,
         },
         {

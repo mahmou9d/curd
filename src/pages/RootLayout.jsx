@@ -7,6 +7,7 @@ const RootLayout = () => {
   const location = useLocation();
    const hideLayout =
      location.pathname === "/SignUp" || location.pathname === "/login"; 
+     
   return (
     <Container>
       {!hideLayout && <Header />}

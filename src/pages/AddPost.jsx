@@ -9,7 +9,7 @@ const AddPost = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const item =JSON.parse(localStorage.getItem("user"))
-console.log(item?.user?.id)
+console.log(item.user_id);
   const { loading, error } = useSelector((state) => state.posts);
   const formik = useFormik({
     initialValues: { message: "", description: "" },
@@ -23,9 +23,10 @@ console.log(item?.user?.id)
             insertPost({
               title: values.message,
               description: values.description,
-              user_id: item?.user?.id,
+              user_id: item?.user?.id || item.user_id,
             })
           );
+          
           navigate("/");
         
 
@@ -37,46 +38,64 @@ console.log(item?.user?.id)
   });
 
   return (
-    <Form onSubmit={formik.handleSubmit}>
-      <Form.Group className="mb-3">
-        <Form.Label>Title</Form.Label>
-        <Form.Control
-          type="text"
-          name="message"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.message}
-          isInvalid={!!formik.errors.message && formik.touched.message}
-        />
-        <Form.Control.Feedback type="invalid">
-          {formik.errors.message}
-        </Form.Control.Feedback>
-      </Form.Group>
+    <>
+      {item?.user?.id || item?.user_id ? (
+        <Form onSubmit={formik.handleSubmit}>
+          <Form.Group className="mb-3">
+            <Form.Label>Title</Form.Label>
+            <Form.Control
+              type="text"
+              name="message"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.message}
+              isInvalid={!!formik.errors.message && formik.touched.message}
+            />
+            <Form.Control.Feedback type="invalid">
+              {formik.errors.message}
+            </Form.Control.Feedback>
+          </Form.Group>
 
-      <Form.Group className="mb-3">
-        <Form.Label>Description</Form.Label>
-        <Form.Control
-          as="textarea"
-          rows={3}
-          name="description"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.description}
-        />
-      </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Description</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              name="description"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.description}
+            />
+          </Form.Group>
 
-      {error && <Alert variant="danger">{error.detail || error}</Alert>}
+          {error && <Alert variant="danger">{error.detail || error}</Alert>}
 
-      <Button type="submit" disabled={loading}>
-        {loading ? (
-          <>
-            <Spinner animation="border" size="sm" /> Submitting...
-          </>
-        ) : (
-          "Submit"
-        )}
-      </Button>
-    </Form>
+          <Button type="submit" disabled={loading}>
+            {loading ? (
+              <>
+                <Spinner animation="border" size="sm" /> Submitting...
+              </>
+            ) : (
+              "Submit"
+            )}
+          </Button>
+        </Form>
+      ) : (
+        <div className="flex flex-col items-center justify-center h-screen bg-black">
+          <div className="bg-black shadow-lg rounded-2xl p-8 text-center max-w-sm">
+            <p className="text-gray-600 mb-6">
+              You need to login first to continue.
+            </p>
+            <a
+              href="/login"
+              className="px-5 py-2 bg-blue-600 text-white rounded-xl shadow hover:bg-blue-700 transition duration-200"
+            >
+              Login Now
+            </a>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

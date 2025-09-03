@@ -8,10 +8,10 @@ const Index = () => {
   const dispatch = useDispatch();
   const { records, loading, error } = useSelector((state) => state.posts);
   const { isLoggedIn } = useSelector((state) => state.auth);
-
+const item =JSON.parse(localStorage.getItem("user"))
   useEffect(() => {
-    dispatch(fetchPosts());
-  }, [dispatch]);
+    dispatch(fetchPosts(item?.user_id || item?.user?.id));
+  }, [dispatch, item?.user?.id, item?.user_id]);
 
   const deleteRecord = useCallback(
     (firebaseKey) => dispatch(deletePost(firebaseKey)),

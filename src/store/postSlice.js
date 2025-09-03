@@ -4,16 +4,17 @@ const initialState = { records: [], loading: false, error: null, record: null };
 
 export const fetchPosts = createAsyncThunk(
   "posts/fetchPosts",
-  async (_, thunkAPI) => {
+  async (id, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
     try {
       const res = await fetch(
-        "https://projects-production-be11.up.railway.app/api/getalltasks/?format=json"
+        `https://projects-production-be11.up.railway.app/api/getusertasks/${id}?format=json`
       );
       const data = await res.json();
-      // console.log(data,"ghdkfjhf,l")
+      console.log(data,"ghdkfjhf,l")
       return data;
     } catch (error) {
+      console.log(error.message);
       return rejectWithValue(error.message);
     }
   }
