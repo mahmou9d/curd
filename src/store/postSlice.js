@@ -80,7 +80,7 @@ export const insertPost = createAsyncThunk(
       );
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        console.error("Error response from server:", data); // <-- أضف السطر ده
+        console.error("Error response from server:", data);
         const errMsg = data?.message || JSON.stringify(data) || "Server error";
         return rejectWithValue(errMsg);
       }

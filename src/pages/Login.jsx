@@ -17,34 +17,6 @@ const Login = () => {
   } = useForm({
     resolver: yupResolver(schemalogin),
   });
-
-  // const onSubmit = async (data) => {
-  //   setErrorMsg(""); // Clear old error
-  //   try {
-  //     const res = await axios.post(
-  //       "https://projects-production-be11.up.railway.app/api/login/?format=json",
-  //       {
-  //         email: data.email,
-  //         password: data.password,
-  //       },
-  //       {   headers: {
-  //   "Content-Type": "application/json",
-  // },
-  // withCredentials: true, }
-  //     );
-
-  //     alert(`✅ Welcome back!`);
-  //     console.log("Login Response:", res.data);
-
-  //     dispatch(loginSuccess(res.data));
-  //     localStorage.setItem("user", JSON.stringify(res.data));
-  //     // Redirect
-  //     nav("/");
-  //   } catch (error) {
-  //     console.error("Login error:", error.response?.data || error.message);
-  //     setErrorMsg(error.response?.data?.error || "Invalid email or password");
-  //   }
-  // };
   const onSubmit = async (data) => {
     setErrorMsg("");
     try {

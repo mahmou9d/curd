@@ -6,9 +6,11 @@ import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../store/authSlice";
+import { useState } from "react";
 const SignUp = () => {
   const dispatch = useDispatch();
   const nav = useNavigate();
+  const [errorMsg, setErrorMsg] = useState("");
   const {
     register,
     handleSubmit,
@@ -16,6 +18,7 @@ const SignUp = () => {
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(schema),
+    mode: "onChange",
   });
 
   const onSubmit = async (data) => {
@@ -34,14 +37,14 @@ const SignUp = () => {
         payload
       );
       nav("/");
-      alert("✅ تم التسجيل بنجاح");
+      alert("Registered successfully ✅");
 
       dispatch(loginSuccess(res.data));
       console.log(res.data);
       localStorage.setItem("user", JSON.stringify(res.data));
     } catch (error) {
-      console.error(error.response?.data || error.message);
-      alert("❌ حصل خطأ أثناء التسجيل");
+      console.error(error.response?.data || error.message, "rtydty");
+      setErrorMsg(error.response.data.error);
     }
   };
 
@@ -133,6 +136,7 @@ const SignUp = () => {
             </NavLink>
           </span>
         </p>
+        {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
       </form>
     </div>
   );
