@@ -17,6 +17,7 @@ const { access } = useSelector((state) => state.auth);
             background: "transparent",
             display: "flex",
             justifyContent: "space-around",
+            fontSize: "18px",
           }}
         >
           <li>
@@ -37,18 +38,21 @@ const { access } = useSelector((state) => state.auth);
         >
           {access ? (
             <>
-              <li style={{ cursor: "pointer" }} onClick={handleLogout}>
+              <li
+                style={{ cursor: "pointer", fontSize: "18px" }}
+                onClick={handleLogout}
+              >
                 Log out
               </li>
             </>
           ) : (
             <>
-              <li>
+              <li style={{ cursor: "pointer", fontSize: "18px" }}>
                 <NavLink to="/login" end>
                   Log in
                 </NavLink>
               </li>
-              <li>
+              <li style={{ cursor: "pointer", fontSize: "18px" }}>
                 <NavLink className="SignUp" to="/SignUp" end>
                   Sign up
                 </NavLink>

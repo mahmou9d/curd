@@ -39,7 +39,7 @@ const PostListItem = ({ data, deleteRecord, isLoggedIn, showAlert }) => {
 
   const records = sortedData.map((el, idx) => (
     <tr style={{ color: "aqua" }} key={el.id}>
-      <td style={{ color: "aqua" }}>#{idx + 1}</td>
+      <td style={{ color: "aqua", fontSize: "22px" }}>#{idx + 1}</td>
       <td
         style={{
           color: "aqua",
@@ -51,7 +51,7 @@ const PostListItem = ({ data, deleteRecord, isLoggedIn, showAlert }) => {
           style={{
             color: "aqua",
             textDecoration: el.completed ? "line-through" : "none",
-            fontSize:"22px"
+            fontSize: "22px",
           }}
           to={`post/${el.id}`}
         >
@@ -67,6 +67,7 @@ const PostListItem = ({ data, deleteRecord, isLoggedIn, showAlert }) => {
               gap: "10px",
               borderRadius: "6px",
               marginRight: "4px",
+              fontSize: "18px",
             }}
             variant="success"
             onClick={() => toggleCompleted(el)}
@@ -80,6 +81,7 @@ const PostListItem = ({ data, deleteRecord, isLoggedIn, showAlert }) => {
               gap: "10px",
               borderRadius: "6px",
               marginRight: "4px",
+              fontSize: "18px",
             }}
             variant="primary"
             onClick={() => toggleCompleted(el)}
@@ -89,6 +91,7 @@ const PostListItem = ({ data, deleteRecord, isLoggedIn, showAlert }) => {
                 textDecoration: "none",
                 color: "white",
                 background: "transparent",
+                fontSize: "18px",
               }}
               to={`post/${el.id}`}
             >
@@ -99,7 +102,7 @@ const PostListItem = ({ data, deleteRecord, isLoggedIn, showAlert }) => {
             <Button
               onClick={() => navigate(`post/${el.id}/edit`)}
               variant="primary"
-              style={{ marginRight: "4px" }}
+              style={{ marginRight: "4px", fontSize: "18px" }}
             >
               Edit
             </Button>
@@ -107,6 +110,7 @@ const PostListItem = ({ data, deleteRecord, isLoggedIn, showAlert }) => {
               disabled={!isLoggedIn}
               variant="danger"
               onClick={() => deleteHandler(el)}
+              style={{ fontSize: "18px" }}
             >
               Delete
             </Button>
