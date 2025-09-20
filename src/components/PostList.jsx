@@ -28,7 +28,7 @@ const PostList = ({ data, deleteRecord, isLoggedIn }) => {
       ) : (
         <div className="flex flex-col items-center justify-center h-screen bg-black">
           <div className="bg-black shadow-lg rounded-2xl p-8 text-center max-w-sm">
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-600 mb-6" style={{ fontSize: "22px" }}>
               You need to login first to continue.
             </p>
             <a
