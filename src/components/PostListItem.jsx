@@ -48,7 +48,11 @@ const PostListItem = ({ data, deleteRecord, isLoggedIn, showAlert }) => {
         }}
       >
         <Link
-          style={{ textDecoration: "none", color: "aqua" }}
+          style={{
+            color: "aqua",
+            textDecoration: el.completed ? "line-through" : "none",
+            fontSize:"22px"
+          }}
           to={`post/${el.id}`}
         >
           {el.title}
@@ -81,11 +85,14 @@ const PostListItem = ({ data, deleteRecord, isLoggedIn, showAlert }) => {
             onClick={() => toggleCompleted(el)}
           >
             <Link
-              style={{ textDecoration: "none", color: "white",background:"transparent", }}
+              style={{
+                textDecoration: "none",
+                color: "white",
+                background: "transparent",
+              }}
               to={`post/${el.id}`}
             >
-                          Review
-
+              Review
             </Link>
           </Button>
           <div className="EditDelete">
