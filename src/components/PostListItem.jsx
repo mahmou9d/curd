@@ -8,9 +8,9 @@ const PostListItem = ({ data, deleteRecord, isLoggedIn }) => {
   const dispatch = useDispatch();
 
   const deleteHandler = (item) => {
-    if (window.confirm(`Do you really want to delete record: ${item.title}?`)) {
+    // if (window.confirm(`Do you really want to delete record: ${item.title}?`)) {
       deleteRecord(item.id);
-    }
+    // }
   };
 
   const toggleCompleted = (item) => {
