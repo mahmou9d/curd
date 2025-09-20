@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 
 const Details = () => {
   const { loading, error, record } = usePostDetails();
+  // console.log(record)
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -38,7 +39,7 @@ const Details = () => {
           >
             Title:
           </span>
-          {record?.message}
+          {record?.task?.title}
         </p>
         <p
           style={{
@@ -63,7 +64,7 @@ const Details = () => {
           >
             Description:
           </span>
-          {record?.description}
+          {record?.task?.description}
         </p>
       </Loading>
     </div>

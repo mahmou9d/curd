@@ -7,13 +7,13 @@ import Loading from "../components/Loading";
 const Index = () => {
   const dispatch = useDispatch();
   const { records, loading, error } = useSelector((state) => state.posts);
-  const { isLoggedIn } = useSelector((state) => state.auth);
-const item =JSON.parse(localStorage.getItem("user"))
+    const { access } = useSelector((state) => state.auth);
+
   useEffect(() => {
-    if (item?.user_id || item?.user?.id) {
-      dispatch(fetchPosts(item?.user_id || item?.user?.id));
+    if (access) {
+      dispatch(fetchPosts());
     }
-  }, [dispatch, item?.user?.id, item?.user_id]);
+  }, [dispatch, access]);
 
   const deleteRecord = useCallback(
     (firebaseKey) => dispatch(deletePost(firebaseKey)),
@@ -25,7 +25,7 @@ const item =JSON.parse(localStorage.getItem("user"))
       <PostList
         data={records}
         deleteRecord={deleteRecord}
-        isLoggedIn={isLoggedIn}
+        isLoggedIn={access}
       />
     </Loading>
   );

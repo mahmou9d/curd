@@ -1,13 +1,12 @@
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { logout } from "../store/authSlice";
 
 const Header = () => {
    const dispatch = useDispatch();
-const { isLoggedIn, user } = useSelector((state) => state.auth);
+const { access } = useSelector((state) => state.auth);
   const handleLogout = () => {
     dispatch(logout());
-    localStorage.removeItem("user");
   };
   return (
     <div className="header">
@@ -36,9 +35,11 @@ const { isLoggedIn, user } = useSelector((state) => state.auth);
             justifyContent: "space-around",
           }}
         >
-          {isLoggedIn && user ? (
+          {access ? (
             <>
-              <li style={{cursor:"pointer"}} onClick={handleLogout}>Log out</li>
+              <li style={{ cursor: "pointer" }} onClick={handleLogout}>
+                Log out
+              </li>
             </>
           ) : (
             <>

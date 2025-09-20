@@ -8,22 +8,20 @@ import * as Yup from "yup";
 const AddPost = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const item =JSON.parse(localStorage.getItem("user"))
-// console.log(item.user_id);
+    const { access } = useSelector((state) => state.auth);
   const { loading, error } = useSelector((state) => state.posts);
   const formik = useFormik({
-    initialValues: { message: "", description: "" },
+    initialValues: { title: "", description: "" },
     validationSchema: Yup.object({
-      message: Yup.string().required("Message is required"),
+      title: Yup.string().required("title is required"),
     }),
     onSubmit: async (values) => {
       try {
 
           await dispatch(
             insertPost({
-              title: values.message,
+              title: values.title,
               description: values.description,
-              user_id: item?.user?.id || item.user_id,
             })
           );
           
@@ -39,20 +37,20 @@ const AddPost = () => {
 
   return (
     <>
-      {item?.user?.id || item?.user_id ? (
+      {access ? (
         <Form onSubmit={formik.handleSubmit}>
           <Form.Group className="mb-3">
             <Form.Label>Title</Form.Label>
             <Form.Control
               type="text"
-              name="message"
+              name="title"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.message}
-              isInvalid={!!formik.errors.message && formik.touched.message}
+              value={formik.values.title}
+              isInvalid={!!formik.errors.title && formik.touched.title}
             />
             <Form.Control.Feedback type="invalid">
-              {formik.errors.message}
+              {formik.errors.title}
             </Form.Control.Feedback>
           </Form.Group>
 

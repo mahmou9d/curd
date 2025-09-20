@@ -1,7 +1,7 @@
 import * as yup from "yup";
 
 export const postSchema = yup.object().shape({
-  message: yup
+  title: yup
     .string()
     .min(2, "please insert at least 2 characters!")
     .max(50, "please insert maximum 50 characters!")
@@ -14,16 +14,6 @@ export const schema = yup.object().shape({
     .required("⚠️ First name is required")
     .min(2, "First name must be at least 2 characters")
     .max(20, "First name must not exceed 20 characters"),
-  fname: yup
-    .string()
-    .required("⚠️ First name is required")
-    .min(2, "First name must be at least 2 characters")
-    .max(20, "First name must not exceed 20 characters"),
-  lname: yup
-    .string()
-    .required("⚠️ Last name is required")
-    .min(2, "Last name must be at least 2 characters")
-    .max(20, "Last name must not exceed 20 characters"),
   email: yup
     .string()
     .email("⚠️ Invalid email address")

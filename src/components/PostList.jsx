@@ -1,12 +1,13 @@
 import { Table } from "react-bootstrap";
 import PostListItem from "./PostListItem";
+import {  useSelector } from "react-redux";
 
 const PostList = ({ data, deleteRecord, isLoggedIn }) => {
-   const item = JSON.parse(localStorage.getItem("user"));
-  //  console.log(item)
+  // console.log(data);
+  const { access } = useSelector((state) => state.auth);
   return (
     <div>
-      {item?.user?.id || item?.user_id ? (
+      {access ? (
         <Table striped bordered hover>
           <thead>
             <tr>

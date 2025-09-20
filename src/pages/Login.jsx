@@ -1,11 +1,11 @@
 import { schemalogin } from "../util/validationSchema";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
+
 import { useNavigate, NavLink } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { loginSuccess } from "../store/authSlice";
+import { loginUser } from "../store/authSlice";
 const Login = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const nav = useNavigate();
@@ -17,30 +17,22 @@ const Login = () => {
   } = useForm({
     resolver: yupResolver(schemalogin),
   });
-  const onSubmit = async (data) => {
+    const onSubmit = async (data) => {
     setErrorMsg("");
+
     try {
-      const res = await axios.post(
-        "https://projects-production-be11.up.railway.app/api/login/?format=json",
-        {
-          email: data.email,
-          password: data.password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json"
-          },
-        }
-      );
-      // console.log("Login Response:", res.data);
-      dispatch(loginSuccess(res.data));
-      localStorage.setItem("user", JSON.stringify(res.data));
-      nav("/");
-    } catch (error) {
-      console.error("Login error:", error.response?.data || error.message);
-      setErrorMsg(error.response?.data?.error || "Invalid email or password");
+      const resultAction = await dispatch(loginUser(data));
+      if (loginUser.fulfilled.match(resultAction)) {
+        nav("/");
+      } else {
+        setErrorMsg(resultAction.payload || "Login failed");
+      }
+    } catch (err) {
+      setErrorMsg("Unexpected error occurred");
     }
   };
+
+
   return (
     <div
       style={{

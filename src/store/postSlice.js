@@ -1,54 +1,231 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
+import { refreshAccessToken } from "./authSlice";
 const initialState = { records: [], loading: false, error: null, record: null };
 
+
+
+// ================== fetch all posts ==================
 export const fetchPosts = createAsyncThunk(
   "posts/fetchPosts",
-  async (id, thunkAPI) => {
-    const { rejectWithValue } = thunkAPI;
+  async (_, thunkAPI) => {
+    const { rejectWithValue, getState, dispatch } = thunkAPI;
+    const token = getState().auth.access;
+
+    let url = `https://projects-production-9397.up.railway.app/api/task/all/`;
+    let options = {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    };
+
     try {
-      const res = await fetch(
-        `https://projects-production-be11.up.railway.app/api/getusertasks/${id}?format=json`
-      );
-      const data = await res.json();
-      // console.log(data,"ghdkfjhf,l")
-      return data;
+      let res = await fetch(url, options);
+
+      if (res.status === 401) {
+        try {
+          const refreshRes = await dispatch(refreshAccessToken()).unwrap();
+          const newToken = refreshRes.access;
+
+          res = await fetch(url, {
+            ...options,
+            headers: {
+              ...options.headers,
+              Authorization: `Bearer ${newToken}`,
+            },
+          });
+        } catch (refreshErr) {
+          return rejectWithValue("Session expired, please login again.");
+        }
+      }
+
+      if (!res.ok) throw new Error("Failed to fetch posts");
+      return await res.json();
     } catch (error) {
-      console.log(error.message);
       return rejectWithValue(error.message);
     }
   }
 );
 
+// ================== fetch single post ==================
 export const fetchPost = createAsyncThunk(
   "posts/fetchPost",
   async (id, thunkAPI) => {
-    const { rejectWithValue } = thunkAPI;
+    const { rejectWithValue, getState, dispatch } = thunkAPI;
+    const token = getState().auth.access;
+
+    let url = `https://projects-production-9397.up.railway.app/api/task/get/${id}`;
+    let options = {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      // body: JSON.stringify({ task_id: id }),
+    };
+
     try {
-      const res = await fetch(
-        `https://projects-production-be11.up.railway.app/api/task/${id}?format=json`
-      );
-      const data = await res.json();
-      return data;
+      let res = await fetch(url, options);
+
+      if (res.status === 401) {
+        try {
+          const refreshRes = await dispatch(refreshAccessToken()).unwrap();
+          const newToken = refreshRes.access;
+
+          res = await fetch(url, {
+            ...options,
+            headers: {
+              ...options.headers,
+              Authorization: `Bearer ${newToken}`,
+            },
+          });
+        } catch (refreshErr) {
+          return rejectWithValue("Session expired, please login again.");
+        }
+      }
+
+      if (!res.ok) throw new Error("Failed to fetch post");
+      const data=res.json();
+      return data
+      
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
 );
 
+// ================== insert post ==================
+export const insertPost = createAsyncThunk(
+  "posts/insertPost",
+  async (newPost, thunkAPI) => {
+    const { rejectWithValue, getState, dispatch } = thunkAPI;
+    const token = getState().auth.access;
+
+    let url = `https://projects-production-9397.up.railway.app/api/task/add/`;
+    let options = {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify(newPost),
+    };
+
+    try {
+      let res = await fetch(url, options);
+
+      if (res.status === 401) {
+        try {
+          const refreshRes = await dispatch(refreshAccessToken()).unwrap();
+          const newToken = refreshRes.access;
+
+          res = await fetch(url, {
+            ...options,
+            headers: {
+              ...options.headers,
+              Authorization: `Bearer ${newToken}`,
+            },
+          });
+        } catch {
+          return rejectWithValue("Session expired, please login again.");
+        }
+      }
+
+      if (!res.ok) throw new Error("Failed to insert post");
+      return await res.json();
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// ================== edit post ==================
+export const editPost = createAsyncThunk(
+  "posts/editPost",
+  async (data, thunkAPI) => {
+    const { rejectWithValue, getState, dispatch } = thunkAPI;
+    const token = getState().auth.access;
+console.log(data)
+    let url = `https://projects-production-9397.up.railway.app/api/task/edit/${data.id}`;
+    let options = {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify({
+        title: data.title,
+        description: data.description,
+      }),
+    };
+
+    try {
+      let res = await fetch(url, options);
+
+      if (res.status === 401) {
+        try {
+          const refreshRes = await dispatch(refreshAccessToken()).unwrap();
+          const newToken = refreshRes.access;
+
+          res = await fetch(url, {
+            ...options,
+            headers: {
+              ...options.headers,
+              Authorization: `Bearer ${newToken}`,
+            },
+          });
+        } catch {
+          return rejectWithValue("Session expired, please login again.");
+        }
+      }
+
+      if (!res.ok) throw new Error("Failed to edit post");
+      return await res.json();
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// ================== delete post ==================
 export const deletePost = createAsyncThunk(
   "posts/deletePost",
   async (id, thunkAPI) => {
-    const { rejectWithValue } = thunkAPI;
-    try {
-      const response = await fetch(
-        `https://projects-production-be11.up.railway.app/api/tasky/delete/${id}`,
-        { method: "DELETE" }
-      );
+    const { rejectWithValue, getState, dispatch } = thunkAPI;
+    const token = getState().auth.access;
 
-      if (!response.ok) {
-        throw new Error("Failed to delete post");
+    let url = `https://projects-production-9397.up.railway.app/api/task/delete/`;
+    let options = {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify({ task_id: id }),
+    };
+
+    try {
+      let res = await fetch(url, options);
+
+      if (res.status === 401) {
+        try {
+          const refreshRes = await dispatch(refreshAccessToken()).unwrap();
+          const newToken = refreshRes.access;
+
+          res = await fetch(url, {
+            ...options,
+            headers: {
+              ...options.headers,
+              Authorization: `Bearer ${newToken}`,
+            },
+          });
+        } catch {
+          return rejectWithValue("Session expired, please login again.");
+        }
       }
+
+      if (!res.ok) throw new Error("Failed to delete post");
       return id;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -56,105 +233,99 @@ export const deletePost = createAsyncThunk(
   }
 );
 
-export const insertPost = createAsyncThunk(
-  "posts/insertPost",
-  async (item, thunkAPI) => {
-    const { rejectWithValue } = thunkAPI;
-    console.log(JSON.stringify(item), "jlgjnfeq");
-    if (!item.title) return rejectWithValue("Message is required");
-    const payload = {
-      title: item.title,
-      description: item.description,
-      user_id: item.user_id,
+// ================== toggle post ==================
+// export const togglePostCompleted = createAsyncThunk(
+//   "posts/togglePost",
+//   async (id, thunkAPI) => {
+//     const { rejectWithValue, getState, dispatch } = thunkAPI;
+//     const token = getState().auth.access;
+
+//     let url = `https://projects-production-9397.up.railway.app/api/task/complete/`;
+//     let options = {
+//       method: "PATCH",
+//       headers: {
+//         "Content-type": "application/json; charset=UTF-8",
+//         ...(token ? { Authorization: `Bearer ${token}` } : {}),
+//       },
+//       body: JSON.stringify({ task_id: id }),
+//     };
+
+//     try {
+//       let res = await fetch(url, options);
+
+//       if (res.status === 401) {
+//         try {
+//           const refreshRes = await dispatch(refreshAccessToken()).unwrap();
+//           const newToken = refreshRes.access;
+
+//           res = await fetch(url, {
+//             ...options,
+//             headers: {
+//               ...options.headers,
+//               Authorization: `Bearer ${newToken}`,
+//             },
+//           });
+//         } catch {
+//           return rejectWithValue("Session expired, please login again.");
+//         }
+//       }
+
+//       if (!res.ok) throw new Error("Failed to toggle post");
+//       const data = await res.json();
+
+//       // لو السيرفر بيرجع الـ task كاملة:
+//       return { id, completed: data.completed };
+//     } catch (error) {
+//       return rejectWithValue(error.message);
+//     }
+//   }
+// );
+export const togglePostCompleted = createAsyncThunk(
+  "posts/togglePost",
+  async (id, thunkAPI) => {
+    const { rejectWithValue, getState, dispatch } = thunkAPI;
+    const token = getState().auth.access;
+
+    let url = `https://projects-production-9397.up.railway.app/api/task/complete/`;
+    let options = {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify({ task_id: id }),
     };
 
     try {
-      const res = await fetch(
-        "https://projects-production-be11.up.railway.app/api/tasks/add/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json; charset=UTF-8",
-          },
-          body: JSON.stringify(payload),
+      let res = await fetch(url, options);
+
+      if (res.status === 401) {
+        try {
+          const refreshRes = await dispatch(refreshAccessToken()).unwrap();
+          const newToken = refreshRes.access;
+
+          res = await fetch(url, {
+            ...options,
+            headers: {
+              ...options.headers,
+              Authorization: `Bearer ${newToken}`,
+            },
+          });
+        } catch {
+          return rejectWithValue("Session expired, please login again.");
         }
-      );
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        console.error("Error response from server:", data);
-        const errMsg = data?.message || JSON.stringify(data) || "Server error";
-        return rejectWithValue(errMsg);
       }
 
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.message || "Network error");
-    }
-  }
-);
+      if (!res.ok) throw new Error("Failed to toggle post");
 
-export const togglePostCompleted = createAsyncThunk(
-  "posts/togglePostCompleted",
-  async (id, thunkAPI) => {
-    const { rejectWithValue, getState } = thunkAPI;
-
-    try {
-      const post = getState().posts.records.find((item) => item.id === id);
-
-      if (!post) {
-        throw new Error("Post not found");
-      }
-      const newCompleted = !post.completed;
-
-      const res = await fetch(
-        `https://projects-production-be11.up.railway.app/api/tasky/complete/${id}?format=json`,
-        {
-          method: "PATCH",
-          body: JSON.stringify({ completed: newCompleted }),
-          headers: {
-            "Content-Type": "application/json; charset=UTF-8",
-          },
-        }
-      );
-
-      if (!res.ok) {
-        throw new Error("Failed to toggle completed");
-      }
-
-      const data = await res.json();
-      return { id, completed: data.completed ?? newCompleted };
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
-export const editPost = createAsyncThunk(
-  "posts/editPost",
-  async ({ id, ...item }, thunkAPI) => {
-    const { rejectWithValue } = thunkAPI;
-    console.log("Editing post with data:", item);
-
-    try {
-      const res = await fetch(
-        `https://projects-production-be11.up.railway.app/api/tasky/edit/${id}?format=json`,
-        {
-          method: "PATCH",
-          body: JSON.stringify(item),
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-          },
-        }
-      );
-      if (!res.ok) throw new Error("Failed to edit post");
-      const data = await res.json();
-      console.log(data);
-      return data;
+      return { id };
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
 );
 
+// ================== Slice ==================
 const postSlice = createSlice({
   name: "posts",
   initialState,
@@ -163,88 +334,98 @@ const postSlice = createSlice({
       state.record = null;
     },
   },
-  extraReducers: {
-    //get post
-    [fetchPost.pending]: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    [fetchPost.fulfilled]: (state, action) => {
-      state.loading = false;
-      state.record = action.payload;
-    },
-    [fetchPost.rejected]: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
-    //fetch posts
-    [fetchPosts.pending]: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    [fetchPosts.fulfilled]: (state, action) => {
-      state.loading = false;
-      state.records = action.payload;
-    },
-    [fetchPosts.rejected]: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
-    //create post
-    [insertPost.pending]: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    [insertPost.fulfilled]: (state, action) => {
-      state.loading = false;
-      state.records.push(action.payload);
-    },
-    [insertPost.rejected]: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
-    //delete post
-    [deletePost.pending]: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    [deletePost.fulfilled]: (state, action) => {
-      state.loading = false;
-      state.records = state.records.filter((el) => el.id !== action.payload);
-    },
-    [deletePost.rejected]: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
+  extraReducers: (builder) => {
+    builder
+      // fetchPost
+      .addCase(fetchPost.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchPost.fulfilled, (state, action) => {
+        console.log(action.payload);
+        state.loading = false;
+        state.record = action.payload;
+      })
+      .addCase(fetchPost.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // fetchPosts
+      .addCase(fetchPosts.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchPosts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.records = action.payload.tasks;
+      })
+      .addCase(fetchPosts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // insertPost
+      .addCase(insertPost.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(insertPost.fulfilled, (state, action) => {
+        state.loading = false;
+        if (Array.isArray(state.records)) {
+          state.records.push(action.payload);
+        } else {
+          state.records = [action.payload];
+        }
+      })
+      .addCase(insertPost.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // deletePost
+      .addCase(deletePost.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deletePost.fulfilled, (state, action) => {
+        state.loading = false;
+        state.records = state.records.filter((el) => el.id !== action.payload);
+      })
+      .addCase(deletePost.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // editPost
+      .addCase(editPost.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(editPost.fulfilled, (state, action) => {
+        state.loading = false;
+        state.record = action.payload;
+      })
+      .addCase(editPost.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // togglePostCompleted
+      .addCase(togglePostCompleted.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(togglePostCompleted.fulfilled, (state, action) => {
+        state.loading = false;
+        if (Array.isArray(state.records)) {
+          const { id } = action.payload;
+          const post = state.records.find((el) => el.id === id);
+          if (post) {
+            post.completed = !post.completed;
+          }
+        }
+      })
 
-    //edit post
-    [editPost.pending]: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    [editPost.fulfilled]: (state, action) => {
-      state.loading = false;
-      state.record = action.payload;
-    },
-    [editPost.rejected]: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
-    // ✅ togglePostCompleted
-    [togglePostCompleted.pending]: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    [togglePostCompleted.fulfilled]: (state, action) => {
-      state.loading = false;
-      const { id, completed } = action.payload;
-      const post = state.records.find((el) => el.id === id);
-      if (post) post.completed = completed;
-    },
-    [togglePostCompleted.rejected]: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
+      .addCase(togglePostCompleted.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
 

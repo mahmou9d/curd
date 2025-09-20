@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 
 const usePostDetails = () => {
   const { id } = useParams();
-// console.log(id);
   const dispatch = useDispatch();
   const { loading, error, record } = useSelector((state) => state.posts);
 

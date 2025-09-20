@@ -3,13 +3,9 @@ import { useSelector } from "react-redux";
 const withGuard = (Component) => {
   const Wrapper = (props) => {
     // @ts-ignore
-    const { isLoggedIn } = useSelector((state) => state.auth);
+    const  access  = useSelector((state) => state.auth.access);
 
-    return isLoggedIn ? (
-      <Component {...props} />
-    ) : (
-      <div>Please logg in first!</div>
-    );
+    return access ? <Component {...props} /> : <div>Please logg in first!</div>;
   };
   return Wrapper;
 };

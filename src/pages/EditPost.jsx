@@ -25,8 +25,8 @@ const EditPost = () => {
 
   const formik = useFormik({
     initialValues: {
-      message: record?.message || "",
-      description: record?.description || "",
+      title: record?.task?.title || "",
+      description: record?.task?.description || "",
     },
     enableReinitialize: true,
     validationSchema: postSchema,
@@ -35,8 +35,8 @@ const EditPost = () => {
       console.log("Form submitted with values:", values);
       dispatch(
         editPost({
-          id: record.id,
-          title: values.message,
+          id: record.task.id,
+          title: values.title,
           description: values.description,
         })
       )
@@ -55,16 +55,16 @@ const EditPost = () => {
         <Form.Label>Title</Form.Label>
         <Form.Control
           type="text"
-          name="message"
+          name="title"
           onChange={(e) => {
             console.log("Input changed:", e.target.value);
             formik.handleChange(e);
           }}
-          value={formik.values.message}
-          isInvalid={!!formik.errors.message}
+          value={formik.values.title}
+          isInvalid={!!formik.errors.title}
         />
         <Form.Control.Feedback type="invalid">
-          {formik.errors.message}
+          {formik.errors.title}
         </Form.Control.Feedback>
       </Form.Group>
       <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
