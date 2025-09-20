@@ -3,19 +3,19 @@ import { useDispatch } from "react-redux";
 import { Button, ButtonGroup } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { togglePostCompleted, fetchPosts } from "../store/postSlice";
-const PostListItem = ({ data, deleteRecord, isLoggedIn }) => {
+const PostListItem = ({ data, deleteRecord, isLoggedIn, showAlert }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const deleteHandler = (item) => {
     // if (window.confirm(`Do you really want to delete record: ${item.title}?`)) {
-      deleteRecord(item.id);
+    deleteRecord(item.id);
     // }
   };
 
   const toggleCompleted = (item) => {
     dispatch(togglePostCompleted(item.id));
     dispatch(fetchPosts());
+
   };
 
   if (!data || data.length === 0) {
@@ -23,7 +23,7 @@ const PostListItem = ({ data, deleteRecord, isLoggedIn }) => {
       <tr>
         <td colSpan="3" style={{ textAlign: "center", padding: "20px" }}>
           <p style={{ marginBottom: "15px", color: "gray", fontSize: "16px" }}>
-            There are no products currently
+            There are no tasks currently
           </p>
           <Button variant="primary" onClick={() => navigate("/post/add")}>
             Add Task
@@ -62,16 +62,37 @@ const PostListItem = ({ data, deleteRecord, isLoggedIn }) => {
               alignItems: "center",
               gap: "10px",
               borderRadius: "6px",
+              marginRight: "4px",
             }}
             variant="success"
-            onClick={() => toggleCompleted(el)} 
+            onClick={() => toggleCompleted(el)}
           >
             {el.completed ? "Completed✅" : "Uncomplete"}
+          </Button>
+          <Button
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              borderRadius: "6px",
+              marginRight: "4px",
+            }}
+            variant="primary"
+            onClick={() => toggleCompleted(el)}
+          >
+            <Link
+              style={{ textDecoration: "none", color: "white",background:"transparent", }}
+              to={`post/${el.id}`}
+            >
+                          Review
+
+            </Link>
           </Button>
           <div className="EditDelete">
             <Button
               onClick={() => navigate(`post/${el.id}/edit`)}
               variant="primary"
+              style={{ marginRight: "4px" }}
             >
               Edit
             </Button>
@@ -88,7 +109,11 @@ const PostListItem = ({ data, deleteRecord, isLoggedIn }) => {
     </tr>
   ));
 
-  return <>{records}</>;
+  return (
+    <>
+      {records}
+    </>
+  );
 };
 
 export default memo(PostListItem);
@@ -178,7 +203,6 @@ export default memo(PostListItem);
 //       </td>
 //     </tr>
 //   ));
-
 
 //   return <>{records}</>;
 // };

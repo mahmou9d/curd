@@ -1,29 +1,30 @@
 import { Table } from "react-bootstrap";
 import PostListItem from "./PostListItem";
-import {  useSelector } from "react-redux";
-
+import { useSelector } from "react-redux";
 const PostList = ({ data, deleteRecord, isLoggedIn }) => {
   // console.log(data);
   const { access } = useSelector((state) => state.auth);
   return (
     <div>
       {access ? (
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th style={{ width: "70%" }}>Title</th>
-              <th style={{ width: "10%" }}></th>
-            </tr>
-          </thead>
-          <tbody>
-            <PostListItem
-              data={data}
-              deleteRecord={deleteRecord}
-              isLoggedIn={isLoggedIn}
-            />
-          </tbody>
-        </Table>
+        <>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th style={{ width: "70%" }}>Title</th>
+                <th style={{ width: "10%" }}></th>
+              </tr>
+            </thead>
+            <tbody>
+              <PostListItem
+                data={data}
+                deleteRecord={deleteRecord}
+                isLoggedIn={isLoggedIn}
+              />
+            </tbody>
+          </Table>
+        </>
       ) : (
         <div className="flex flex-col items-center justify-center h-screen bg-black">
           <div className="bg-black shadow-lg rounded-2xl p-8 text-center max-w-sm">

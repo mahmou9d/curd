@@ -22,7 +22,7 @@ export const loginUser = createAsyncThunk(
           body: JSON.stringify(payload),
         }
       );
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      if (!res.ok) throw new Error(`email or password wrong`);
       const data = await res.json();
       return data; 
     } catch (error) {
@@ -66,7 +66,7 @@ export const signupUser = createAsyncThunk(
           body: JSON.stringify(payload),
         }
       );
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      if (!res.ok) throw new Error(`email or password used or wrong`);
       const data = await res.json(); 
       return data; 
     } catch (error) {

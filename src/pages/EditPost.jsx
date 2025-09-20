@@ -8,10 +8,12 @@ import { editPost } from "../store/postSlice";
 import withGuard from "../util/withGuard";
 import { useFormik } from "formik";
 import { postSchema } from "../util/validationSchema";
+import Alert from "@mui/material/Alert";
+import { useState } from "react";
 
 const EditPost = () => {
   const { loading, error, record } = usePostDetails();
-  // console.log(record)
+  const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -41,7 +43,10 @@ const EditPost = () => {
         })
       )
         .unwrap()
-        .then(() => navigate("/"))
+        .then(() => {
+  setShowAlert(true);
+  setTimeout(() => navigate("/"), 1500);
+        })
         .catch((err) => console.error("Edit error:", err));
     },
   });
@@ -86,6 +91,11 @@ const EditPost = () => {
           Submit
         </Button>
       </Loading>
+      {showAlert && (
+        <Alert style={{marginTop:"30px"}} variant="outlined" severity="success">
+          This is an outlined success Alert.
+        </Alert>
+      )}
     </Form>
   );
 };
