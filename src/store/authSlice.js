@@ -15,7 +15,7 @@ export const loginUser = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     try {
       const res = await fetch(
-        "https://projects-production-9397.up.railway.app/api/login/",
+        "https://twtrtr-production.up.railway.app/api/login/",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -40,7 +40,7 @@ export const refreshAccessToken = createAsyncThunk(
       if (!refreshToken) throw new Error("No refresh token available");
 
       const res = await fetch(
-        "https://projects-production-9397.up.railway.app/api/token/refresh/",
+        "https://twtrtr-production.up.railway.app/api/token/refresh/",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -59,7 +59,7 @@ export const signupUser = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     try {
       const res = await fetch(
-        "https://projects-production-9397.up.railway.app/api/signup/",
+        "https://twtrtr-production.up.railway.app/api/signup/",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

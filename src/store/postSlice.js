@@ -11,7 +11,7 @@ export const fetchPosts = createAsyncThunk(
     const { rejectWithValue, getState, dispatch } = thunkAPI;
     const token = getState().auth.access;
 
-    let url = `https://projects-production-9397.up.railway.app/api/task/all/`;
+    let url = `https://twtrtr-production.up.railway.app/api/task/all/`;
     let options = {
       method: "GET",
       headers: {
@@ -55,7 +55,7 @@ export const fetchPost = createAsyncThunk(
     const { rejectWithValue, getState, dispatch } = thunkAPI;
     const token = getState().auth.access;
 
-    let url = `https://projects-production-9397.up.railway.app/api/task/get/${id}`;
+    let url = `https://twtrtr-production.up.railway.app/api/task/get/${id}`;
     let options = {
       method: "GET",
       headers: {
@@ -102,7 +102,7 @@ export const insertPost = createAsyncThunk(
     const { rejectWithValue, getState, dispatch } = thunkAPI;
     const token = getState().auth.access;
 
-    let url = `https://projects-production-9397.up.railway.app/api/task/add/`;
+    let url = `https://twtrtr-production.up.railway.app/api/task/add/`;
     let options = {
       method: "POST",
       headers: {
@@ -147,7 +147,7 @@ export const editPost = createAsyncThunk(
     const { rejectWithValue, getState, dispatch } = thunkAPI;
     const token = getState().auth.access;
 console.log(data)
-    let url = `https://projects-production-9397.up.railway.app/api/task/edit/${data.id}`;
+    let url = `https://twtrtr-production.up.railway.app/api/task/edit/${data.id}`;
     let options = {
       method: "PATCH",
       headers: {
@@ -195,7 +195,7 @@ export const deletePost = createAsyncThunk(
     const { rejectWithValue, getState, dispatch } = thunkAPI;
     const token = getState().auth.access;
 
-    let url = `https://projects-production-9397.up.railway.app/api/task/delete/`;
+    let url = `https://twtrtr-production.up.railway.app/api/task/delete/`;
     let options = {
       method: "DELETE",
       headers: {
@@ -240,7 +240,7 @@ export const deletePost = createAsyncThunk(
 //     const { rejectWithValue, getState, dispatch } = thunkAPI;
 //     const token = getState().auth.access;
 
-//     let url = `https://projects-production-9397.up.railway.app/api/task/complete/`;
+//     let url = `https://twtrtr-production.up.railway.app/api/task/complete/`;
 //     let options = {
 //       method: "PATCH",
 //       headers: {
@@ -286,7 +286,7 @@ export const togglePostCompleted = createAsyncThunk(
     const { rejectWithValue, getState, dispatch } = thunkAPI;
     const token = getState().auth.access;
 
-    let url = `https://projects-production-9397.up.railway.app/api/task/complete/`;
+    let url = `https://twtrtr-production.up.railway.app/api/task/complete/`;
     let options = {
       method: "PATCH",
       headers: {
